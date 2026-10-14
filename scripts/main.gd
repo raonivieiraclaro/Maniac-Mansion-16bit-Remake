@@ -70,7 +70,7 @@ func _draw() -> void:
   if not carrying:
    draw_rect(Rect2(610, 310, 115, 115), Color("#876341"))
    draw_rect(Rect2(624, 325, 86, 86), Color("#a78153"), false, 5.0)
-  var msg := messages[language][3] if carrying else messages[language][2]
+  var msg: String = str(messages[language][3] if carrying else messages[language][2])
   draw_string(font, Vector2(60, 495), msg, HORIZONTAL_ALIGNMENT_LEFT, -1, 23, Color.WHITE)
   if carrying and hero.distance_to(target) < 3:
    draw_string(font, Vector2(60, 530), messages[language][4], HORIZONTAL_ALIGNMENT_LEFT, -1, 18, Color("#f2d37b"))
