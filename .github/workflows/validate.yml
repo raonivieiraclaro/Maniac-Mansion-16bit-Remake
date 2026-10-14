@@ -1,0 +1,19 @@
+name: Godot Project Validation
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Godot
+        run: |
+          wget -q https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux.x86_64.zip
+          unzip -q Godot_v4.3-stable_linux.x86_64.zip
+          chmod +x Godot_v4.3-stable_linux.x86_64
+      - name: Import project
+        run: ./Godot_v4.3-stable_linux.x86_64 --headless --path . --editor --import --quit
+      - name: Parse and launch scene
+        run: timeout 15s ./Godot_v4.3-stable_linux.x86_64 --headless --path . --quit-after 5
