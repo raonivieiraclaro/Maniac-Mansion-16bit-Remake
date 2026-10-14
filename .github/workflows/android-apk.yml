@@ -31,6 +31,7 @@ jobs:
           mkdir -p "$HOME/.local/share/godot/export_templates/4.3.stable"
           unzip -q Godot_v4.3-stable_export_templates.tpz
           cp templates/* "$HOME/.local/share/godot/export_templates/4.3.stable/"
+          test -f "$HOME/.local/share/godot/export_templates/4.3.stable/android_debug.apk"
       - name: Configure Android export credentials
         run: |
           keytool -genkeypair -v -keystore "$RUNNER_TEMP/debug.keystore" -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
@@ -48,6 +49,9 @@ jobs:
       - name: Export APK
         run: |
           mkdir -p build
+          export GODOT_ANDROID_KEYSTORE_DEBUG_PATH="$RUNNER_TEMP/debug.keystore"
+          export GODOT_ANDROID_KEYSTORE_DEBUG_USER="androiddebugkey"
+          export GODOT_ANDROID_KEYSTORE_DEBUG_PASSWORD="android"
           ./Godot_v4.3-stable_linux.x86_64 --headless --path . --export-debug Android build/ManiacMansion16Bit.apk
           test -s build/ManiacMansion16Bit.apk
       - name: Upload installable APK
